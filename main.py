@@ -23,13 +23,29 @@ class Products(db.Model):
 
 
 
+@app.route('/delete_product')
+def delete_product():
+    if 'admin_status' in session and session['admin_status']:
+        prod_id = request.args.get('id')
+        filter_ = request.args.get("filter")
+        try:
+            product = Products.query.filter_by(id=prod_id).delete()
+            db.session.commit()
+        except:
+            return "Ошибка БД"
+        return redirect(f'/?search={filter_}')
 @app.route("/")
 def test():
+    session['admin_status'] = True
     products = Products.query.order_by(Products.id.desc()).all()
     filters = request.args.get("search")
     if filters == None:
         filters = ''
-    return render_template('index.html', products=products, filter=filters)
+
+    isAdmin = str('admin_status' in session and session['admin_status'])
+    print(isAdmin)
+
+    return render_template('index.html', products=products, filter=filters, admin=isAdmin)
 
 
 @app.route('/admin', methods=['GET', 'POST'])

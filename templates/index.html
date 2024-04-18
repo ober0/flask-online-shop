@@ -57,10 +57,10 @@
         <!-- Search Bar -->
         <div class="row search justify-content-center">
             <div class="col-md-6">
-                <form action="" method="get" class="form-inline mt-3">
-                    <input type="text" name="search" class="form-control mr-2" placeholder="Search">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
+                    <form action="" method="get" class="form-inline mt-3">
+                        <input type="text" name="search" class="form-control mr-2" placeholder="Search">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
             </div>
         </div>
         <div class="container">
@@ -77,6 +77,14 @@
                                     <p class="card-text">{{ el.about }}</p>
                                     <p class="card-text">{{ el.cost }}</p>
                                     <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                                    {% if admin == "True" %}
+                                    <br>
+                                        <form action="delete_product" method="get" class="form-inline mt-3">
+                                            <input type="hidden" name="filter" value="{{ filter }}">
+                                            <input type="hidden" name="id" value="{{ el.id }}">
+                                            <button type="submit" class="btn btn-primary btn-danger">Удалить</button>
+                                        </form>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -90,6 +98,14 @@
                                 <p class="card-text">{{ el.about }}</p>
                                 <p class="card-text">{{ el.cost }}</p>
                                 <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                                {% if admin == "True" %}
+                                <br>
+                                    <form action="delete_product" method="get" class="form-inline mt-3">
+                                        <input type="hidden" name="filter" value="{{ filter }}">
+                                        <input type="hidden" name="id" value="{{ el.id }}">
+                                        <button type="submit" class="btn btn-primary btn-danger">Удалить</button>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
