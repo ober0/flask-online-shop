@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Store</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add custom styles here */
+        .product-card {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .product-img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .search{
+            position: relative;
+            left:130px;
+            bottom:70px;
+        }
+
+
+        .block_12 {
+
+            min-height: 350px;
+
+        }
+
+        .ttt {
+            align-self:
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Logo -->
+        <div class="container">
+            <div class="row justify-content-between align-items-center py-3">
+                <div class="col-auto">
+                    <img src="static/img/site/logo.png" alt="Logo" height="50">
+                </div>
+                <div class="col-auto">
+                    <a href="#" class="btn btn-primary">Shopping Cart</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="container">
+        <!-- Search Bar -->
+        <div class="row search justify-content-center">
+            <div class="col-md-6">
+                <form action="" method="get" class="form-inline mt-3">
+                    <input type="text" name="search" class="form-control mr-2" placeholder="Search">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+        <div class="d-flex flex-row flex-wrap">
+            <!-- Product Cards -->
+            {% for el in products %}
+                {% if filter != "" %}
+                    {% if filter in el.name %}
+                        <div class="col-md-3 ">
+                            <div class="card product-card block_12">
+                                <img src="{{ el.photo_url }}" alt="" class="card-img-top product-img">
+                                <div style="display: flex; flex-direction: column;">
+                                    <h5 class="card-title">{{ el.name }}</h5>
+                                    <p class="card-text">{{ el.about }}</p>
+                                    <p class="card-text">{{ el.cost }}</p>
+                                    <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="col-md-3 ">
+                        <div class="card product-card block_12">
+                            <img src="{{ el.photo_url }}" alt="" class="card-img-top product-img">
+                            <div style="display: flex; flex-direction: column;">
+                                <h5 class="card-title">{{ el.name }}</h5>
+                                <p class="card-text">{{ el.about }}</p>
+                                <p class="card-text">{{ el.cost }}</p>
+                                <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+            </div>
+    </div>
+</body>
+</html>
