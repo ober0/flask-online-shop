@@ -68,7 +68,7 @@
             <!-- Product Cards -->
             {% for el in products %}
                 {% if filter != "" %}
-                    {% if filter in el.name %}
+                    {% if filter|lower in el.name|lower %}
                         <div class="col-md-3 ">
                             <div class="card product-card block_12">
                                 <img src="{{ el.photo_url }}" alt="" class="card-img-top product-img">

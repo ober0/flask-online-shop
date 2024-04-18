@@ -93,8 +93,7 @@ def add_product():
         return redirect('/')
 
 
-# @app.route('/seach_products')
-# def seach_products():
+
 
 
 
