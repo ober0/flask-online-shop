@@ -1,0 +1,24 @@
+.product-card {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.product-img {
+    max-width: 100%;
+    height: auto;
+}
+.search{
+    position: relative;
+    left:130px;
+    bottom:70px;
+}
+.block_12 {
+
+    min-height: 350px;
+
+}
+.ttt {
+    align-self:
+}
+

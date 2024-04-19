@@ -5,37 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Store</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Add custom styles here */
-        .product-card {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .product-img {
-            max-width: 100%;
-            height: auto;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 
-        .search{
-            position: relative;
-            left:130px;
-            bottom:70px;
-        }
-
-
-        .block_12 {
-
-            min-height: 350px;
-
-        }
-
-        .ttt {
-            align-self:
-        }
-
-    </style>
 </head>
 <body>
     <header>
@@ -46,7 +17,7 @@
                     <img src="static/img/site/logo.png" alt="Logo" height="50">
                 </div>
                 <div class="col-auto">
-                    <a href="#" class="btn btn-primary">Shopping Cart</a>
+                    <a id="cart" href="#" class="btn btn-primary">В корзине: {{ cart|length }}</a>
                 </div>
             </div>
         </div>
@@ -75,8 +46,17 @@
                                 <div style="display: flex; flex-direction: column;">
                                     <h5 class="card-title">{{ el.name }}</h5>
                                     <p class="card-text">{{ el.about }}</p>
-                                    <p class="card-text">{{ el.cost }}</p>
-                                    <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                                    <p class="card-text">{{ el.cost }} руб.</p>
+                                    <button class="btn btn-primary addToCartBtn" data-product-id="{{ el.id }}" style="margin-top: auto; background-color:
+                                    {% if el.id in cart %}
+                                        rgb(100, 155, 255);
+                                    {% endif %}">
+                                        {% if el.id in cart %}
+                                            В корзине
+                                        {% else %}
+                                            Добавить в корзину
+                                        {% endif %}
+                                    </button>
                                     {% if admin == "True" %}
                                     <br>
                                         <form action="delete_product" method="get" class="form-inline mt-3">
@@ -96,8 +76,17 @@
                             <div style="display: flex; flex-direction: column;">
                                 <h5 class="card-title">{{ el.name }}</h5>
                                 <p class="card-text">{{ el.about }}</p>
-                                <p class="card-text">{{ el.cost }}</p>
-                                <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                                <p class="card-text">{{ el.cost }} руб.</p>
+                                <button class="btn btn-primary addToCartBtn" data-product-id="{{ el.id }}" style="margin-top: auto; background-color:
+                                    {% if el.id in cart %}
+                                        rgb(100, 155, 255);
+                                    {% endif %}">
+                                    {% if el.id in cart %}
+                                        В корзине
+                                    {% else %}
+                                        Добавить в корзину
+                                    {% endif %}
+                                </button>
                                 {% if admin == "True" %}
                                 <br>
                                     <form action="delete_product" method="get" class="form-inline mt-3">
@@ -115,5 +104,10 @@
         </div>
             </div>
     </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/cart_btn.js') }}"></script>
+
 </body>
 </html>
