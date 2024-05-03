@@ -85,8 +85,6 @@
                                 <div style="display: flex; flex-direction: column;">
                                     <h5 class="card-title">{{ el.name }}</h5>
                                     <p class="card-text">{{ el.about }}</p>
-                                    <p class="card-text">{{ el.cost }}руб</p>
-                                    <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
                                     <p class="card-text">{{ el.cost }} руб.</p>
                                     <button class="btn btn-primary addToCartBtn" data-product-id="{{ el.id }}" style="margin-top: auto; background-color:
                                     {% if el.id in cart %}
