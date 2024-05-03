@@ -24,7 +24,10 @@ class Products(db.Model):
 
 @app.route('/corzina')
 def corzina():
-        return render_template('corzina.html', products=Products.query.all())
+    cart_ids = session.get('cart', [])
+    cart_products = Products.query.filter(Products.id.in_(cart_ids)).all()
+
+    return render_template('corzina.html', products=cart_products)
 
 
 @app.route('/delete_product')
@@ -121,6 +124,7 @@ def add_to_cart():
         'status': "OK" if add else "REM",
         'cart_count': len(session['cart'])
     }
+    print(session['cart'])
     return response
 
 
