@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Административное меню</title>
+    <style>
+        /* CSS стили */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff6347;
+            color: white;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #ff7f50;
+        }
+
+        .container {
+            position: fixed;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+            text-align: center; /* Центрирование содержимого */
+        }
+
+        .buttons {
+            margin-top: 20px; /* Небольшое пространство между кнопками */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Административное меню</h1>
+        <div class="buttons">
+            <a href="/admin/add-product?admin=true&time={{ time }}" class="button">Добавить товар</a>
+            <a href="/admin/view-logs?admin=true&time={{ time }}" class="button">Просмотр логов</a>
+        </div>
+    </div>
+</body>
+</html>

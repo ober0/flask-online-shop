@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление успешно!</title>
+    <style>
+        h1{
+            color: #4CAF50;
+            font-size: 30px;
+        }
+
+        .container{
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Товар успешно добавлен!</h1>
+        <div id="timer">Автопереход через: 3сек</div>
+        <a href="/admin">Или нажмите сюда</a>
+    </div>
+    <script>
+        function updateTimer() {
+            document.getElementById('timer').innerText = 'Осталось ' + millisec/1000 + " сек";
+            if (millisec <= 0){
+                window.location.href = '/admin';
+            }else{
+                millisec -= 100;
+                setTimeout(updateTimer, 100);
+            }
+        }
+
+        var millisec = 3000;
+        updateTimer()
+    </script>
+</body>
+</html>

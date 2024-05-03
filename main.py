@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session, request, jsonify
+from flask import Flask, render_template, redirect, session, request, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 import secrets
 from datetime import datetime
@@ -8,6 +8,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 app.secret_key = secrets.token_hex(16)
 
 db = SQLAlchemy(app)
+
+class Errors(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(350), nullable=False)
+    time = db.Column(db.String(350), nullable=False)
+
+    def __repr__(self):
+        return '<id {}>'.format(self.id)
+
 
 
 class Products(db.Model):
@@ -29,7 +38,24 @@ def corzina():
 
     return render_template('corzina.html', products=cart_products)
 
+@app.route('/delete_log', methods=['POST'])
+def delete_log():
+    if request.method == 'POST':
+        data = request.json
+        log_id = data.get('logId')
 
+        try:
+            log = Errors.query.get(log_id)
+            if log:
+                db.session.delete(log)
+                db.session.commit()
+                return jsonify({'message': 'Лог успешно удален'}), 200
+            else:
+                return jsonify({'error': 'Лог не найден'}), 404
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    else:
+        return jsonify({'error': 'Метод не разрешен'}), 405
 @app.route('/delete_product')
 def delete_product():
     if 'admin_status' in session and session['admin_status']:
@@ -38,7 +64,18 @@ def delete_product():
         try:
             product = Products.query.filter_by(id=prod_id).delete()
             db.session.commit()
-        except:
+
+        except Exception as ex:
+            text = str(ex)
+            time = str(datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
+            error = Errors(text=text, time=time)
+
+            try:
+                db.session.add(error)
+                db.session.commit()
+            except:
+                db.session.rollback()
+
             return "Ошибка БД"
         return redirect(f'/?search={filter_}')
 
@@ -47,7 +84,7 @@ def delete_product():
 def main():
     if 'cart' not in session:
         session['cart'] = []
-    session['admin_status'] = True
+
     products = Products.query.order_by(Products.id.desc()).all()
     filters = request.args.get("search")
     if filters == None:
@@ -63,7 +100,8 @@ def main():
 def admin():
     if request.method == "GET":
         if 'admin_status' in session and session['admin_status']:
-            return redirect(f"/add_product?admin=true&time={datetime.utcnow().strftime('%d_%m_%Y_%H_%M_%S')}")
+            time = datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
+            return render_template('admin.html', time=time)
         else:
             return render_template('auth.html')
     else:
@@ -76,7 +114,16 @@ def admin():
         else:
             return redirect('/')
 
-@app.route('/add_product', methods=['GET', 'POST'])
+
+@app.route('/admin/view-logs')
+def view_logs():
+    if 'admin_status' in session and session['admin_status'] and request.args.get('admin') == 'true':
+        return render_template('check-logs.html', logs = Errors.query.order_by(Errors.id.desc()).all())
+    else:
+        return redirect('/')
+
+
+@app.route('/admin/add-product', methods=['GET', 'POST'])
 def add_product():
     if 'admin_status' in session and session['admin_status'] and request.args.get("admin") == 'true':
         if request.method == "GET":
@@ -97,9 +144,20 @@ def add_product():
             try:
                 db.session.add(product)
                 db.session.commit()
-                return redirect('/admin')
-            except:
-                return "Проищошла ошибка БД"
+                return render_template('added/success.html')
+            except Exception as ex:
+                text = str(ex)
+                time = str(datetime.now().strftime('%d-%m-%Y %H:%M:%S'))
+                error = Errors(text=text, time=time)
+
+                try:
+                    db.session.add(error)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+
+                return render_template('added/error.html', error=ex)
+
     else:
         return redirect('/')
 
