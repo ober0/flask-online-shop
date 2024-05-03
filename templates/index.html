@@ -32,14 +32,9 @@
         }
 
         .ttt {
-            align-self: center;
+            align-self:
         }
 
-        .corzina{
-            position: relative;
-            bottom:50%;
-            left:120%;
-        }
     </style>
 </head>
 <body>
@@ -47,10 +42,12 @@
         <!-- Logo -->
         <div class="container">
             <div class="row justify-content-between align-items-center py-3">
-                <div class="">
+                <div class="col-auto">
                     <img src="static/img/site/logo.png" alt="Logo" height="50">
                 </div>
-
+                <div class="col-auto">
+                    <a href="#" class="btn btn-primary">Shopping Cart</a>
+                </div>
             </div>
         </div>
     </header>
@@ -60,16 +57,10 @@
         <!-- Search Bar -->
         <div class="row search justify-content-center">
             <div class="col-md-6">
-                    <form action="" method="get" class="form-inline mt-3 col-auto">
+                    <form action="" method="get" class="form-inline mt-3">
                         <input type="text" name="search" class="form-control mr-2" placeholder="Search">
-                        <button type="submit" class="btn btn-primary">Найти</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </form>
-
-
-                    <form action="/corzina" method="get" class="form-inline mt-3 col-auto corzina">
-                        <button type="submit" class="btn btn-primary">Корзина</button>
-                    </form>
-                </div>
             </div>
         </div>
         <div class="container">
@@ -84,7 +75,7 @@
                                 <div style="display: flex; flex-direction: column;">
                                     <h5 class="card-title">{{ el.name }}</h5>
                                     <p class="card-text">{{ el.about }}</p>
-                                    <p class="card-text">{{ el.cost }}руб</p>
+                                    <p class="card-text">{{ el.cost }}</p>
                                     <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
                                     {% if admin == "True" %}
                                     <br>
