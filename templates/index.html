@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Store</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
     <style>
         /* Add custom styles here */
         .product-card {
@@ -32,9 +34,14 @@
         }
 
         .ttt {
-            align-self:
+            align-self: center;
         }
 
+        .corzina{
+            position: relative;
+            bottom:50%;
+            left:120%;
+        }
     </style>
 </head>
 <body>
@@ -42,12 +49,10 @@
         <!-- Logo -->
         <div class="container">
             <div class="row justify-content-between align-items-center py-3">
-                <div class="col-auto">
+                <div class="">
                     <img src="static/img/site/logo.png" alt="Logo" height="50">
                 </div>
-                <div class="col-auto">
-                    <a href="#" class="btn btn-primary">Shopping Cart</a>
-                </div>
+
             </div>
         </div>
     </header>
@@ -57,9 +62,14 @@
         <!-- Search Bar -->
         <div class="row search justify-content-center">
             <div class="col-md-6">
-                    <form action="" method="get" class="form-inline mt-3">
+                    <form action="" method="get" class="form-inline mt-3 col-auto">
                         <input type="text" name="search" class="form-control mr-2" placeholder="Search">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">Найти</button>
+                    </form>
+
+
+                    <form action="/corzina" method="get" class="form-inline mt-3 col-auto corzina">
+                        <button type="submit" class="btn btn-primary">Корзина</button>
                     </form>
             </div>
         </div>
@@ -68,15 +78,24 @@
             <!-- Product Cards -->
             {% for el in products %}
                 {% if filter != "" %}
-                    {% if filter in el.name %}
+                    {% if filter|lower in el.name|lower %}
                         <div class="col-md-3 ">
                             <div class="card product-card block_12">
                                 <img src="{{ el.photo_url }}" alt="" class="card-img-top product-img">
                                 <div style="display: flex; flex-direction: column;">
                                     <h5 class="card-title">{{ el.name }}</h5>
                                     <p class="card-text">{{ el.about }}</p>
-                                    <p class="card-text">{{ el.cost }}</p>
-                                    <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                                    <p class="card-text">{{ el.cost }} руб.</p>
+                                    <button class="btn btn-primary addToCartBtn" data-product-id="{{ el.id }}" style="margin-top: auto; background-color:
+                                    {% if el.id in cart %}
+                                        rgb(100, 155, 255);
+                                    {% endif %}">
+                                        {% if el.id in cart %}
+                                            В корзине
+                                        {% else %}
+                                            Добавить в корзину
+                                        {% endif %}
+                                    </button>
                                     {% if admin == "True" %}
                                     <br>
                                         <form action="delete_product" method="get" class="form-inline mt-3">
@@ -96,8 +115,17 @@
                             <div style="display: flex; flex-direction: column;">
                                 <h5 class="card-title">{{ el.name }}</h5>
                                 <p class="card-text">{{ el.about }}</p>
-                                <p class="card-text">{{ el.cost }}</p>
-                                <a href="#" class="btn btn-primary" style="margin-top: auto;">Добавить в корзину</a>
+                                <p class="card-text">{{ el.cost }} руб.</p>
+                                <button class="btn btn-primary addToCartBtn" data-product-id="{{ el.id }}" style="margin-top: auto; background-color:
+                                    {% if el.id in cart %}
+                                        rgb(100, 155, 255);
+                                    {% endif %}">
+                                    {% if el.id in cart %}
+                                        В корзине
+                                    {% else %}
+                                        Добавить в корзину
+                                    {% endif %}
+                                </button>
                                 {% if admin == "True" %}
                                 <br>
                                     <form action="delete_product" method="get" class="form-inline mt-3">
@@ -115,5 +143,10 @@
         </div>
             </div>
     </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/cart_btn.js') }}"></script>
+
 </body>
 </html>

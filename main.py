@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session, request
+from flask import Flask, render_template, redirect, session, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import secrets
 from datetime import datetime
@@ -22,6 +22,13 @@ class Products(db.Model):
         return f"<Product {self.id}"
 
 
+@app.route('/corzina')
+def corzina():
+    cart_ids = session.get('cart', [])
+    cart_products = Products.query.filter(Products.id.in_(cart_ids)).all()
+
+    return render_template('corzina.html', products=cart_products)
+
 
 @app.route('/delete_product')
 def delete_product():
@@ -34,8 +41,12 @@ def delete_product():
         except:
             return "Ошибка БД"
         return redirect(f'/?search={filter_}')
+
+
 @app.route("/")
-def test():
+def main():
+    if 'cart' not in session:
+        session['cart'] = []
     session['admin_status'] = True
     products = Products.query.order_by(Products.id.desc()).all()
     filters = request.args.get("search")
@@ -43,9 +54,9 @@ def test():
         filters = ''
 
     isAdmin = str('admin_status' in session and session['admin_status'])
-    print(isAdmin)
 
-    return render_template('index.html', products=products, filter=filters, admin=isAdmin)
+
+    return render_template('index.html', products=products, filter=filters, admin=isAdmin, cart=session['cart'])
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -93,8 +104,30 @@ def add_product():
         return redirect('/')
 
 
-# @app.route('/seach_products')
-# def seach_products():
+
+
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    id = request.form.get('productId')
+    add = False
+
+    if int(id) not in session['cart']:
+
+        session['cart'].append(int(id))
+        add = True
+    else:
+        session['cart'].remove(int(id))
+
+    session.modified = True
+
+    response = {
+        'status': "OK" if add else "REM",
+        'cart_count': len(session['cart'])
+    }
+    print(session['cart'])
+    return response
+
+
 
 
 
