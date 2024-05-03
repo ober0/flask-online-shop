@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 90%;
+            margin: 0 auto;
+            padding-top: 20px; /* Добавлено для вертикального выравнивания */
+        }
+
+        .cart-item-container {
+            width: 65%;
+        }
+
+        .cart-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            overflow: hidden; /* Добавлено для управления переполнением */
+        }
+
+        .cart-item img {
+            max-width: 100px;
+            max-height: 100px;
+            float: left;
+            margin-right: 10px;
+        }
+
+        .cart-item .info {
+            float: left;
+        }
+
+        .checkout-container {
+            width: 30%;
+            position: sticky;
+            top: 20px;
+            height: auto;
+            background-color: #f2f2f2;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .checkout {
+            text-align: center;
+        }
+
+        /* Стили для кнопки "Оплатить" */
+        .checkout button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        /* При наведении добавляем тень */
+        .checkout button:hover {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cart-item-container" id="cart-items">
+            {% for product in products %}
+                <div class="cart-item">
+                    <img src="{{ product.photo_url }}" >
+                    <div class="info">
+                        <h2>{{ product.name }}</h2>
+                        <p>{{ product.about }}</p>
+                        <p class="price">{{ product.cost }}руб</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="checkout-container">
+            <div class="checkout">
+                <h2>Итого к оплате:</h2>
+                <p id="total-price"></p>
+                <button id="checkout-button">Оплатить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/cost_calc.js') }}"></script>
+</body>
+
+</html>

@@ -22,6 +22,10 @@ class Products(db.Model):
         return f"<Product {self.id}"
 
 
+@app.route('/corzina')
+def corzina():
+        return render_template('corzina.html', products=Products.query.all())
+
 
 @app.route('/delete_product')
 def delete_product():
@@ -93,8 +97,6 @@ def add_product():
         return redirect('/')
 
 
-# @app.route('/seach_products')
-# def seach_products():
 
 
 
